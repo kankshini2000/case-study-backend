@@ -1,19 +1,19 @@
-package com.example.task.demotask.dto;
+package com.example.basedomains.dto;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TaskDto {
-	
+
+public class Task {
+
 	private Long tid;
 	private Long userId;
 	private Long cid;
@@ -23,5 +23,4 @@ public class TaskDto {
 	private LocalDate endDate;
 	
 	private LocalTime hrsPerdays;
-	
 }

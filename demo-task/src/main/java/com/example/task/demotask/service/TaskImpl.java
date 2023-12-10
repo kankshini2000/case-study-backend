@@ -1,7 +1,6 @@
 package com.example.task.demotask.service;
 
 import java.util.List;
-
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -11,13 +10,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-
+import com.example.basedomains.dto.TaskEvent;
 import com.example.task.demotask.Exception.ResourceNotFoundException;
 import com.example.task.demotask.dto.CourseDto;
 import com.example.task.demotask.dto.TaskCourseDto;
 import com.example.task.demotask.dto.TaskDto;
 import com.example.task.demotask.dto.UserDto;
 import com.example.task.demotask.dto.UserRole;
+import com.example.task.demotask.kafka.TaskProducer;
 import com.example.task.demotask.model.Tasks;
 import com.example.task.demotask.repo.TaskRepo;
 
@@ -26,6 +26,9 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class TaskImpl implements TaskService{
+	
+	
+	private TaskProducer taskProducer;
 	
 	private static final Logger logger = LoggerFactory.getLogger(TaskImpl.class);
 	
@@ -42,9 +45,20 @@ public class TaskImpl implements TaskService{
 		if (user.getRole().equals(UserRole.ADMIN)) {
 			throw new RuntimeException("Admin cannnot be enrolled to course");
 		}
-		getCourseByWebClient(taskDto.getCid());
+		CourseDto course = getCourseByWebClient(taskDto.getCid());
+		taskDto.setCname(course.getCname());
 		Tasks task = modelMapper.map(taskDto, Tasks.class);
 		Tasks savedTask = taskRepo.save(task);
+		TaskEvent taskEvent = new TaskEvent();
+        taskEvent.setStatus("Pending");
+        taskEvent.setMessage("Task is in pending state");
+        taskEvent.setTask(modelMapper.map(task,com.example.basedomains.dto.Task.class));
+        try {
+              taskProducer.sendMessage(taskEvent);
+        }
+        catch(Exception e) {
+              
+        }
 		return modelMapper.map(savedTask, TaskDto.class);
 	}
 	

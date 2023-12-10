@@ -34,7 +34,7 @@ public class Tasks {
 	
 	private Long userId;
 	private Long cid;
-	
+	private String cname;
 	private LocalDate startDate;
 	
 	private LocalDate endDate;
