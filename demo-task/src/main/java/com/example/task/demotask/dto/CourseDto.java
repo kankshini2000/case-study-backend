@@ -31,5 +31,4 @@ public class CourseDto {
 	
 	private int days;
 	
-	
 }

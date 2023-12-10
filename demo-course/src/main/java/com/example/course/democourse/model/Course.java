@@ -4,6 +4,10 @@ package com.example.course.democourse.model;
 
 import java.time.LocalTime;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

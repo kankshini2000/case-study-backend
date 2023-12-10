@@ -15,4 +15,5 @@ public interface UserService {
 	UserDto getUserbyId(Long pid);
 	UserDto updateUser(UserDto userDto, Long pid);
 	void deleteUser(Long pid);
+	User getUser(String uname);
 }

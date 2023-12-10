@@ -1,12 +1,16 @@
 package com.example.task.demotask.service;
 
 import java.util.List;
+
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+
 
 import com.example.task.demotask.Exception.ResourceNotFoundException;
 import com.example.task.demotask.dto.CourseDto;
@@ -22,6 +26,8 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class TaskImpl implements TaskService{
+	
+	private static final Logger logger = LoggerFactory.getLogger(TaskImpl.class);
 	
 	private TaskRepo taskRepo;
 	
@@ -55,6 +61,19 @@ public class TaskImpl implements TaskService{
 						task.getEndDate(),
 						task.getHrsPerdays()
 				))
+				.collect(Collectors.toList());
+	}
+	@Override
+	public List<TaskCourseDto> getAllTasksNew() {
+		List<Tasks> listTask = taskRepo.findAll();
+ 
+		return listTask.stream().map((task) -> new TaskCourseDto(
+				task.getTid(), 
+				task.getUserId(),
+				getCourseByWebClient(task.getCid()), 
+				task.getStartDate(),
+				task.getEndDate(),
+				task.getHrsPerdays()))
 				.collect(Collectors.toList());
 	}
 

@@ -2,25 +2,18 @@ package com.example.training.demouser.dto;
 
 import com.example.training.demouser.model.UserRole;
 
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto {
+@Setter
+@Getter
+public class LoginDto {
 	
-    private Long pid;
-	
+	private long pid;
 	private String uname;
-	
-	private String email;
-	
-	private String password;
-	
 	private UserRole role;
 }
